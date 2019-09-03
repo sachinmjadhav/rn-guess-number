@@ -11,9 +11,12 @@ import {
 
 import Card from "../components/Card";
 import Input from "../components/Input";
+import NumberContainer from "../components/NumberContainer";
+import BodyText from '../components/BodyText';
+import TitleText from '../components/TitleText';
 import colors from "../constants/colors";
 
-const StartGameScreen = () => {
+const StartGameScreen = props => {
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
@@ -55,15 +58,24 @@ const StartGameScreen = () => {
 
   let confirmedInput;
   if (confirmed) {
-    confirmedInput = <Text>Choosen Number: {selectedNumber}</Text>;
+    confirmedInput = (
+      <Card style={styles.summaryContainer}>
+        <Text>You selected</Text>
+        <NumberContainer>{selectedNumber}</NumberContainer>
+        <Button
+          title="STAR GAME!"
+          onPress={() => props.onStartGame(selectedNumber)}
+        />
+      </Card>
+    );
   }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.screen}>
-        <Text style={styles.title}>Start a New Game!</Text>
+        <TitleText style={styles.title}>Start a New Game!</TitleText>
         <Card style={styles.inputContainer}>
-          <Text>Select a Number</Text>
+          <BodyText>Select a Number</BodyText>
           <Input
             blurOnSubmit
             autoCapitalize="none"
@@ -101,11 +113,10 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 10,
-    alignItems: "center"
+    alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    marginVertical: 10
+    marginVertical: 10,
   },
   inputContainer: {
     width: 300,
@@ -124,6 +135,10 @@ const styles = StyleSheet.create({
   input: {
     width: 50,
     textAlign: "center"
+  },
+  summaryContainer: {
+    marginTop: 20,
+    alignItems: "center"
   }
 });
 
